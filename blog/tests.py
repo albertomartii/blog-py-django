@@ -1,9 +1,13 @@
-"""Pruebas del blog: slugs, permisos, paginación, búsqueda, comentarios y likes."""
+"""Pruebas del blog: slugs, permisos, paginación, búsqueda, comentarios, likes y carga inicial."""
+from io import StringIO
+
+from django.core.management import CommandError, call_command
 from django.test import TestCase
 from django.urls import reverse
 
 from usuarios.models import Usuario
 
+from .datos_iniciales import PUBLICACIONES_INICIALES
 from .models import Comentario, Publicacion
 
 
@@ -165,3 +169,48 @@ class PruebasLikes(TestCase):
 
     def test_like_a_slug_inexistente_devuelve_404(self):
         self.assertEqual(self.client.post(reverse("blog:like", args=["no-existe"])).status_code, 404)
+
+
+class PruebasCargaInicial(TestCase):
+    def cargar(self, *argumentos):
+        call_command("cargar_publicaciones", *argumentos, stdout=StringIO())
+
+    def test_las_imagenes_de_los_datos_existen_en_static(self):
+        from pathlib import Path
+
+        from django.conf import settings
+
+        for datos in PUBLICACIONES_INICIALES:
+            archivo = Path(settings.DIRECTORIO_BASE) / "static" / "images" / "blog" / datos["imagen"]
+            self.assertTrue(archivo.exists(), f"Falta la imagen {datos['imagen']}")
+
+    def test_crea_diez_publicaciones_ordenadas_por_fecha(self):
+        self.cargar()
+
+        self.assertEqual(Publicacion.objects.count(), 10)
+        primera = Publicacion.objects.first()
+        self.assertEqual(primera.titulo, PUBLICACIONES_INICIALES[0]["titulo"])
+
+    def test_se_puede_repetir_sin_duplicar(self):
+        self.cargar()
+        self.cargar()
+
+        self.assertEqual(Publicacion.objects.count(), 10)
+
+    def test_asigna_el_autor_indicado(self):
+        usuario = Usuario.objects.create_user("ana@ejemplo.com", "clave-segura-123", nombre="Ana")
+
+        self.cargar("--autor", "ANA@ejemplo.com")
+
+        self.assertEqual(Publicacion.objects.filter(autor=usuario).count(), 10)
+
+    def test_por_defecto_usa_el_primer_superusuario(self):
+        admin = Usuario.objects.create_superuser("admin@ejemplo.com", "clave-segura-123", nombre="Admin")
+
+        self.cargar()
+
+        self.assertEqual(Publicacion.objects.filter(autor=admin).count(), 10)
+
+    def test_autor_inexistente_da_error(self):
+        with self.assertRaises(CommandError):
+            self.cargar("--autor", "nadie@ejemplo.com")
