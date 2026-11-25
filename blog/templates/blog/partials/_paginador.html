@@ -1,0 +1,28 @@
+{# Paginador con ventana de páginas. Parámetros: pagina_actual, numeros_de_pagina, busqueda #}
+{% if pagina_actual.paginator.num_pages > 1 %}
+<nav class="text-center" aria-label="Paginación de publicaciones">
+    <ul class="pagination">
+        {% if pagina_actual.has_previous %}
+            <li><a href="?pagina={{ pagina_actual.previous_page_number }}{% if busqueda %}&busqueda={{ busqueda|urlencode }}{% endif %}" rel="prev">&laquo; Anterior</a></li>
+        {% else %}
+            <li class="disabled"><span>&laquo; Anterior</span></li>
+        {% endif %}
+
+        {% for numero in numeros_de_pagina %}
+            {% if numero == pagina_actual.paginator.ELLIPSIS %}
+                <li class="disabled"><span>&hellip;</span></li>
+            {% elif numero == pagina_actual.number %}
+                <li class="active"><span>{{ numero }}</span></li>
+            {% else %}
+                <li><a href="?pagina={{ numero }}{% if busqueda %}&busqueda={{ busqueda|urlencode }}{% endif %}">{{ numero }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if pagina_actual.has_next %}
+            <li><a href="?pagina={{ pagina_actual.next_page_number }}{% if busqueda %}&busqueda={{ busqueda|urlencode }}{% endif %}" rel="next">Siguiente &raquo;</a></li>
+        {% else %}
+            <li class="disabled"><span>Siguiente &raquo;</span></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}

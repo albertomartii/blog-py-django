@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block titulo %}Iniciar sesión{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-sm-push-3">
+            <h1 class="h3">Inicia sesión</h1>
+
+            <form method="post">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="alert alert-danger">El correo o la contraseña no son correctos.</div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="id_username">Correo electrónico</label>
+                    <input type="email" name="username" id="id_username" class="form-control"
+                           value="{{ form.username.value|default:'' }}" autocomplete="email" required autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="id_password">Contraseña</label>
+                    <input type="password" name="password" id="id_password" class="form-control"
+                           autocomplete="current-password" required>
+                </div>
+
+                {# Conserva la página a la que el usuario quería ir antes de pedirle el login #}
+                <input type="hidden" name="next" value="{{ next }}">
+
+                <button type="submit" class="btn btn-lg btn-primary">Entrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block titulo %}Imágenes{% endblock %}
+
+{% block contenido %}
+<div id="images">
+    <div class="container">
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
+            <h1>Imágenes</h1>
+
+            {# multipart/form-data es imprescindible para subir archivos #}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include "partials/_formulario.html" %}
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary pull-right">Subir</button>
+                </div>
+            </form>
+
+            <hr class="divider">
+
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Archivo</th>
+                        <th>Visitas</th>
+                        <th>Likes</th>
+                        <th>Descargas</th>
+                        <th>Categoría</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for imagen in imagenes %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><img src="{{ imagen.archivo.url }}" alt="{{ imagen.archivo.name }}" style="width:150px; height:auto;"></td>
+                            <td>{{ imagen.numero_visitas }}</td>
+                            <td>{{ imagen.numero_likes }}</td>
+                            <td>{{ imagen.numero_descargas }}</td>
+                            <td>{{ imagen.categoria.nombre }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="6" class="text-center">No hay imágenes todavía.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

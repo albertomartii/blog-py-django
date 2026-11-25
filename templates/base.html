@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}PhotographItem{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/extras.css' %}">
+</head>
+
+<body id="page-top">
+
+    {# Nombre de la ruta actual, para marcar la opción activa del menú #}
+    {% with ruta_actual=request.resolver_match.view_name %}
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                    <span class="sr-only">Mostrar menú</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'galeria:inicio' %}"><span>[PHOTO]</span></a>
+            </div>
+            <div class="collapse navbar-collapse navbar-right" id="menu">
+                <ul class="nav navbar-nav">
+                    <li class="lien{% if ruta_actual == 'galeria:inicio' %} active{% endif %}">
+                        <a href="{% url 'galeria:inicio' %}"><i class="fa fa-home sr-icons"></i> Inicio</a>
+                    </li>
+                    <li class="lien{% if ruta_actual == 'blog:listado' %} active{% endif %}">
+                        <a href="{% url 'blog:listado' %}"><i class="fa fa-file-text sr-icons"></i> Blog</a>
+                    </li>
+                    <li class="{% if ruta_actual == 'contacto:contacto' %}active{% endif %}">
+                        <a href="{% url 'contacto:contacto' %}"><i class="fa fa-phone-square sr-icons"></i> Contacto</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="{% if ruta_actual == 'blog:nueva' %}active{% endif %}">
+                            <a href="{% url 'blog:nueva' %}"><i class="fa fa-plus-square sr-icons"></i> Nueva publicación</a>
+                        </li>
+                        {% if user.is_staff %}
+                            <li class="{% if ruta_actual == 'galeria:categorias' %}active{% endif %}">
+                                <a href="{% url 'galeria:categorias' %}"><i class="fa fa-folder sr-icons"></i> Categorías</a>
+                            </li>
+                            <li class="{% if ruta_actual == 'galeria:imagenes' %}active{% endif %}">
+                                <a href="{% url 'galeria:imagenes' %}"><i class="fa fa-picture-o sr-icons"></i> Imágenes</a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            {# El logout debe ser POST: un enlace GET no puede cerrar sesión #}
+                            <form method="post" action="{% url 'usuarios:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="boton-enlace">
+                                    <i class="fa fa-sign-out sr-icons"></i> {{ user.nombre }} - Salir
+                                </button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="lien{% if ruta_actual == 'usuarios:login' %} active{% endif %}">
+                            <a href="{% url 'usuarios:login' %}"><i class="fa fa-sign-in sr-icons"></i> Entrar</a>
+                        </li>
+                        <li class="{% if ruta_actual == 'usuarios:registro' %}active{% endif %}">
+                            <a href="{% url 'usuarios:registro' %}"><i class="fa fa-user-secret sr-icons"></i> Registro</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endwith %}
+
+    {% if messages %}
+        <div class="container mensajes">
+            {% for mensaje in messages %}
+                <div class="alert alert-{{ mensaje.tags }}">{{ mensaje }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block contenido %}{% endblock %}
+
+    <footer class="home-page">
+        <div class="container text-muted text-center">
+            <div class="row">
+                <ul class="nav col-sm-4">
+                    <li class="footer-number"><i class="fa fa-phone sr-icons"></i> (00228)92229954 </li>
+                    <li><i class="fa fa-envelope sr-icons"></i> kouvenceslas93@gmail.com</li>
+                    <li>Photography Fanatic Template &copy; 2017</li>
+                </ul>
+                <ul class="list-inline social-buttons col-sm-4 col-sm-push-4">
+                    <li><a href="#"><i class="fa fa-facebook sr-icons"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter sr-icons"></i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus sr-icons"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    {% block scripts_extra %}{% endblock %}
+</body>
+</html>

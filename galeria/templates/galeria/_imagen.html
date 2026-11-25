@@ -1,0 +1,39 @@
+{# Miniatura de la galería con acciones al pasar el ratón. Parámetro: imagen #}
+<div class="col-xs-12 col-sm-6 col-md-3">
+    <div class="sol">
+        <img class="img-responsive" src="{{ imagen.archivo.url }}" alt="Imagen de la categoría {{ imagen.categoria.nombre }}">
+        <div class="behind">
+            <div class="head text-center">
+                <ul class="list-inline">
+                    <li>
+                        <a class="gallery" href="{{ imagen.archivo.url }}" data-toggle="tooltip" data-original-title="Vista rápida">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="tooltip" data-original-title="Me gusta">
+                            <i class="fa fa-heart"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ imagen.archivo.url }}" download data-toggle="tooltip" data-original-title="Descargar">
+                            <i class="fa fa-download"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="tooltip" data-original-title="Más información">
+                            <i class="fa fa-info"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row box-content">
+                <ul class="list-inline text-center">
+                    <li><i class="fa fa-eye"></i> {{ imagen.numero_visitas }}</li>
+                    <li><i class="fa fa-heart"></i> {{ imagen.numero_likes }}</li>
+                    <li><i class="fa fa-download"></i> {{ imagen.numero_descargas }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

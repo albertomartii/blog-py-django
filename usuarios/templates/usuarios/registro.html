@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block titulo %}Registro{% endblock %}
+
+{% block contenido %}
+<div id="register">
+    <div class="container">
+        <h1>Registro</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {% include "partials/_formulario.html" %}
+            <button type="submit" class="pull-right btn btn-lg sr-button">Registrarme</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

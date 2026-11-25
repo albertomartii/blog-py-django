@@ -1,0 +1,22 @@
+{# Tarjeta de una publicación en el listado. Parámetro: publicacion #}
+<div class="col-xs-12 col-sm-12">
+    <div class="post">
+        <div class="post-heading">
+            <span>{{ publicacion.fecha_publicacion|date:"d" }} {{ publicacion.fecha_publicacion|date:"F" }}</span>
+            <img class="img-responsive" src="{{ publicacion.url_imagen }}" alt="{{ publicacion.titulo }}">
+        </div>
+        <div class="post-body">
+            <h3><a href="{% url 'blog:detalle' publicacion.slug %}"><strong>{{ publicacion.titulo }}</strong></a></h3>
+            <hr>
+            <p>{{ publicacion.contenido|truncatechars:300 }}</p>
+        </div>
+        <div class="post-footer">
+            <a class="btn" href="{% url 'blog:detalle' publicacion.slug %}">LEER MÁS...</a>
+            <span>
+                <i class="fa fa-heart sr-icons"></i> <span>{{ publicacion.numero_likes }}</span>
+                <i class="fa fa-comments sr-icons"></i>
+                <a href="{% url 'blog:detalle' publicacion.slug %}#form"><span>{{ publicacion.total_comentarios }}</span></a>
+            </span>
+        </div>
+    </div>
+</div>

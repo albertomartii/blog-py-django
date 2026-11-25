@@ -1,0 +1,36 @@
+/* Ajustes propios sobre el tema: elementos que el tema original no contemplaba. */
+
+/* Botón de cerrar sesión con el aspecto de un enlace del menú */
+.navbar .nav li form {
+    margin: 0;
+}
+
+.boton-enlace {
+    background: none;
+    border: 0;
+    color: #777;
+    cursor: pointer;
+    padding: 5px;
+    margin: 0 10px;
+}
+
+.boton-enlace:hover {
+    color: #333;
+}
+
+@media (max-width: 767px) {
+    .boton-enlace {
+        padding: 10px 15px;
+        margin: 0;
+    }
+}
+
+/* Mensajes de aviso bajo la barra de navegación */
+.mensajes {
+    margin-top: 20px;
+}
+
+/* Botón de "me gusta" de las publicaciones */
+.boton-like {
+    cursor: pointer;
+}

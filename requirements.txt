@@ -1,0 +1,4 @@
+# Django 5.2 LTS: compatible con Python 3.10 a 3.13
+django>=5.2,<5.3
+# Necesaria para validar y guardar las imágenes de la galería (ImageField)
+Pillow>=10.0

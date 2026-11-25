@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titulo %}PhotographItem{% endblock %}
+
+{% block contenido %}
+<div id="index">
+
+    <div class="row">
+        <div class="col-xs-12 intro">
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img class="img-responsive" src="{% static 'images/index/woman.jpg' %}" alt="Imagen de cabecera">
+                </div>
+                <div class="carousel-caption">
+                    <h1>ENCUENTRA AQUÍ BUENAS FOTOGRAFÍAS</h1>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="index-body">
+        {% if categorias %}
+            <div class="table-responsive">
+                <table class="table text-center">
+                    <thead>
+                        <tr>
+                            {% for categoria in categorias %}
+                                <td>
+                                    <a class="link{% if forloop.first %} active{% endif %}"
+                                       href="#categoria{{ categoria.id }}" data-toggle="tab">{{ categoria.nombre }}</a>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                </table>
+                <hr>
+            </div>
+
+            <div class="tab-content">
+                {% for categoria in categorias %}
+                    <div id="categoria{{ categoria.id }}" class="tab-pane{% if forloop.first %} active{% endif %}">
+                        <div class="row popup-gallery">
+                            {% for imagen in categoria.imagenes.all %}
+                                {% include "galeria/_imagen.html" %}
+                            {% empty %}
+                                <p class="text-center text-muted">Esta categoría todavía no tiene imágenes.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-muted">Todavía no hay categorías en la galería.</p>
+        {% endif %}
+    </div>
+
+    <div class="index-form text-center">
+        <h3>SUSCRÍBETE A NUESTRO BOLETÍN</h3>
+        <h5>Suscríbete para recibir novedades y regalos</h5>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-xs-12 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
+                    <input class="form-control" type="text" placeholder="Escribe aquí tu correo electrónico">
+                    <a href="" class="btn btn-lg sr-button">SUSCRIBIRME</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="last-box row">
+        <div class="col-xs-12 col-sm-4 col-sm-push-4 last-block">
+            <div class="partner-box text-center">
+                <p>
+                    <i class="fa fa-map-marker fa-2x sr-icons"></i>
+                    <span class="text-muted">35 North Drive, Adroukpape, PY 88105, Agoe Telessou</span>
+                </p>
+                <h4>Nuestros socios</h4>
+                <hr>
+                <div class="text-muted text-left">
+                    <ul class="list-inline">
+                        <li><img src="{% static 'images/index/log2.jpg' %}" alt="Logotipo"></li>
+                        <li>Nombre del primer socio</li>
+                    </ul>
+                    <ul class="list-inline">
+                        <li><img src="{% static 'images/index/log1.jpg' %}" alt="Logotipo"></li>
+                        <li>Nombre del segundo socio</li>
+                    </ul>
+                    <ul class="list-inline">
+                        <li><img src="{% static 'images/index/log3.jpg' %}" alt="Logotipo"></li>
+                        <li>Nombre del tercer socio</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

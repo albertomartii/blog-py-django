@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block titulo %}Blog{% endblock %}
+
+{% block contenido %}
+<div id="blog" class="container">
+    <header class="page-header-block">
+        {% if busqueda %}
+            <h1>Resultados para “{{ busqueda }}”</h1>
+        {% else %}
+            <h1>Blog</h1>
+        {% endif %}
+    </header>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-8">
+            {% if total > 0 %}
+                <p class="text-muted">
+                    Mostrando <strong>{{ pagina_actual|length }}</strong> de <strong>{{ total }}</strong>
+                    publicaci{{ total|pluralize:"ón,ones" }}
+                    &middot; Página {{ pagina_actual.number }} de {{ pagina_actual.paginator.num_pages }}
+                </p>
+
+                {% for publicacion in pagina_actual %}
+                    {% include "blog/partials/_publicacion.html" %}
+                {% endfor %}
+
+                {% include "blog/partials/_paginador.html" %}
+            {% else %}
+                <div class="alert alert-info">No se han encontrado publicaciones.</div>
+            {% endif %}
+        </div>
+
+        <aside class="col-xs-12 col-md-4 sidebar">
+            <form action="{% url 'blog:listado' %}" role="search">
+                <div class="input-group">
+                    <input type="search" class="form-control" name="busqueda" value="{{ busqueda }}"
+                           placeholder="Buscar publicaciones…" aria-label="Buscar publicaciones">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-danger" aria-label="Buscar"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
+
+            <h4>Publicaciones recientes</h4>
+            {% for reciente in recientes %}
+                {% include "blog/partials/_publicacion_reciente.html" %}
+            {% empty %}
+                <p class="text-muted">Todavía no hay publicaciones.</p>
+            {% endfor %}
+        </aside>
+    </div>
+</div>
+{% endblock %}

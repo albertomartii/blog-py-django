@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titulo %}{{ publicacion.titulo }}{% endblock %}
+
+{% block contenido %}
+<div id="single">
+    <div class="container">
+
+        <div class="row">
+            <h2>{{ publicacion.titulo }}</h2>
+            <hr class="subtitle">
+            <div class="block1">
+                <div class="col-xs-12 col-sm-9">
+                    <img class="img-responsive" src="{{ publicacion.url_imagen }}" alt="{{ publicacion.titulo }}">
+                    <div>{{ publicacion.contenido|linebreaks }}</div>
+                    <h4>- Por {{ publicacion.autor.nombre|default:"un autor anónimo" }}</h4>
+                    <hr>
+                    <ul class="list-inline">
+                        <li>{{ publicacion.fecha_publicacion|date:"d F Y" }} |</li>
+                        <li><a class="page-scroll" href="#form">COMENTAR ({{ publicacion.total_comentarios }})</a> |</li>
+                        <li>
+                            <a href="#" id="boton-like" class="boton-like"
+                               data-url="{% url 'blog:like' publicacion.slug %}" data-csrf="{{ csrf_token }}">
+                                <i class="fa fa-heart"></i> ME GUSTA (<span id="contador-likes">{{ publicacion.numero_likes }}</span>)
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xs-12 col-sm-3">
+                    <h4>Publicaciones recientes</h4>
+                    <hr class="subtitle1">
+                    {% for reciente in recientes %}
+                        {% include "blog/partials/_publicacion_reciente.html" %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 block2">
+                {% for comentario in comentarios %}
+                    {% include "blog/partials/_comentario.html" %}
+                {% empty %}
+                    <p class="text-muted">Todavía no hay comentarios. ¡Sé el primero!</p>
+                {% endfor %}
+
+                <hr class="line">
+                <div id="form" class="col-xs-12 col-sm-6 col-sm-push-3">
+                    <form method="post" action="{% url 'blog:detalle' publicacion.slug %}#form">
+                        {% csrf_token %}
+                        {% include "partials/_formulario.html" %}
+                        <button type="submit" class="btn btn-lg btn-info sr-button">ENVIAR</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="{% static 'js/likes.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block titulo %}Gracias{% endblock %}
+
+{% block contenido %}
+<div id="thank-you" class="container text-center" style="padding-top: 120px; padding-bottom: 80px;">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div style="margin-bottom: 20px;">
+                <i class="fa fa-check-circle fa-5x text-success" style="color: #28a745;"></i>
+            </div>
+            <h1 style="font-weight: bold; margin-bottom: 20px;">¡Gracias!</h1>
+            <p class="lead" style="font-size: 18px; color: #666; margin-bottom: 30px;">
+                Hemos recibido tu mensaje. Te responderemos lo antes posible.
+            </p>
+            <a href="{% url 'galeria:inicio' %}" class="btn btn-lg btn-primary" style="border-radius: 25px; padding: 10px 30px;">
+                <i class="fa fa-arrow-left"></i> Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

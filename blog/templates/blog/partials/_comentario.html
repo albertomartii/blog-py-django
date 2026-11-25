@@ -1,0 +1,7 @@
+{# Un comentario. Parámetro: comentario #}
+<div class="comment{% if forloop.counter|divisibleby:2 %} alt-comment{% endif %}">
+    <h4>{{ comentario.nombre }}</h4>
+    <p class="time">{{ comentario.fecha_publicacion|date:"d F Y, H:i" }}</p>
+    <hr>
+    <p>{{ comentario.texto|linebreaksbr }}</p>
+</div>

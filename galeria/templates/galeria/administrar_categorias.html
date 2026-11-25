@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block titulo %}Categorías{% endblock %}
+
+{% block contenido %}
+<div id="categories">
+    <div class="container">
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
+            <h1>Categorías</h1>
+
+            <form method="post">
+                {% csrf_token %}
+                {% include "partials/_formulario.html" %}
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary pull-right">Guardar</button>
+                </div>
+            </form>
+
+            <hr class="divider">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for categoria in categorias %}
+                        <tr>
+                            <th scope="row">{{ categoria.id }}</th>
+                            <td>{{ categoria.nombre }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="2" class="text-center">No hay categorías todavía.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
