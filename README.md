@@ -18,6 +18,16 @@ python manage.py createsuperuser    # pide email, nombre y contraseña
 python manage.py runserver
 ```
 
+Para cargar 10 publicaciones de ejemplo en el blog (se pueden editar después desde `/admin/`):
+
+```bash
+python manage.py cargar_publicaciones                  # autor: el primer superusuario
+python manage.py cargar_publicaciones --autor ana@ejemplo.com
+```
+
+Es seguro repetirlo: no duplica las publicaciones que ya existen. Los textos están en
+`blog/datos_iniciales.py`.
+
 Para ejecutar las pruebas: `python manage.py test`
 
 ## Estructura
